@@ -1,47 +1,26 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
-namespace CSharp_FindPrime_VuTienThanh
+namespace Hw
 {
-    class Program
+    public class Program
     {
-        public static Task<bool> IsPrime(int number)
+        public static void Main(string[] args)
         {
-            return Task.Run(() => {
-            if (number <= 1) return false;
-            if (number == 2) return true;
-            if (number % 2 == 0) return false;
-
-            var boundary = (int)Math.Floor(Math.Sqrt(number));
-                
-            for (int i = 3; i <= boundary; i += 2)
-                if (number % i == 0)
-                    return false;
-            
-            return true;
-            });     
+            CreateHostBuilder(args).Build().Run();
         }
 
-        public static async Task<List<int>> AddPrimeNumbers()
-        {
-            List<int> list = new List<int>();
-            
-            for (int i=1; i<=100; i++){
-                if (await IsPrime(i)) {
-                    list.Add(i);
-                }
-            }
-            return list;
-        }
-        public static void ShowList(List<int> list) {
-            foreach (int i in list) {
-                Console.WriteLine(i);
-            }
-        }
-        static void Main(string[] args)
-        {
-            ShowList(list);
-        }
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                });
     }
 }
